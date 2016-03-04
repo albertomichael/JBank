@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=
+comment0.target=Teller()
+comment0.text=\r\n\ Method\ Cunstructor\ Teller\r\n
+comment1.params=args
+comment1.target=void\ main(java.lang.String[])
+comment1.text=\r\n\ Fungsi\ utama\ dari\ Teller\ adalah\ untuk\ membuat\ objek\ baru\ yang\ isinya\ adalah\ akun\ \r\n\ dan\ data\ Customer\ seperti\ balance.Class\ ini\ juga\ dapat\ menampilkan\ nilai\ akun\ dan\ balancenya\ \r\n\ @param\ args\ Arguments\r\n
+numComments=2
