@@ -1,107 +1,137 @@
+import java.util.*;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.text.*;
+import java.lang.Math;
 /**
- * Kelas ini memodelkan akun bank
- * Terdiri dari method yang berfungsi untuk melakukan pemrosesan data yang berupa masukan ID, Balance(uang), 
- * Tipe dari akun, dan terdapat kegiatan menarik maupun mendeposit balance(uang).
- * @author Alberto Michael
- * 
+ * Kelas Account ini akan berisi informasi mengenai akun customer.
+ * @author Alberto
+ * @version 10 April 2016
  */
-public class Account
-{
-    private char acctType;
-    private double balance;
-    private String ID;
+public abstract class Account   
+{   
+    protected double balance;
+    protected String id;
+    protected static MathContext mc = new MathContext(3);
     
     /**
-     * Method Constructor Account
-     * @param type Tipe dari Akun
-     * @param amount Jumlah Nilai Kas
+     * Constructor (pembangun kelas Account)
      */
-    public Account(Customer cust, double amount, char type) {
-        acctType = type;
+   /*public Account(String ID, double amount) {
         balance = amount;
-        ID = cust.getCustID()+ "" + type;
-    }
+        id = ID;
+    }*/
     
-    public String toString() {
-        System.out.println("Account Type  :   " + acctType);
-        System.out.println("ID            :   " + ID);
+    /**
+     * Method pada constructor kelas Account
+     * @param type sebagai tipe akun customer
+     * @param amount sebagai nilai saldo customer
+     */
+    /*public Account(char type, double amount) {
+          //acctType = type; 
+          balance = amount;}*/
+    
+     public String toString() {
+        //System.out.println("Account Type  :   " + acctType);
+        //if (this.getClass().equals())
+        if ( this instanceof Savings && !(this instanceof Investment)) {
+            System.out.println("SAVING");
+        } else if ( this instanceof LineOfCredit) {
+            LineOfCredit l = (LineOfCredit)this;
+            System.out.println("Line Of Credit");
+            System.out.println("Credit Balance:   "+ l.getCreditBalance());
+            System.out.println("Monthly Fee   :   "+ l.getMonthlyFee());
+        } else if ( this instanceof OverDraftProtection) {
+            OverDraftProtection o = (OverDraftProtection)this;
+            System.out.println("Overdraft Protection");
+            System.out.println("Monthly Fee   :   "+ o.getMonthlyFee());
+        } else if ( this instanceof Investment) {
+            System.out.println("Investment");
+        }
         System.out.println("Balance       :   " + balance);
         return "";
     }
     
-    /**
-     * Method deposit untuk mendeposit atau menambahkan sejumlah uang ke akun yang bersangkutan
-     * @param amount Jumlah Nilai Kas
+     /**
+     * Method untuk deposit customer
+     * @param amount saldo akun customer 
      */
-    public boolean deposit(double amount) {
-        if (amount < 0) {
-            return false;
-        } else {
+    public boolean deposite(double amount)
+    {
+        if (amount < 0)
+        { 
+            return false; 
+        }
+        else
+        { 
             balance += amount;
-            return true;
-        }   
+            return true; 
+        }
+    }
+    
+     public static double futureValue(double balance, double rate, double compound, double period) 
+    {
+        BigDecimal bal = new BigDecimal (balance);
+        BigDecimal r = new BigDecimal (rate);
+        BigDecimal n = new BigDecimal (compound);
+        BigDecimal t = new BigDecimal (period);
+        BigDecimal f1 = r.divide(n, mc.DECIMAL32).add(new BigDecimal(1));
+        BigDecimal f2 = n.multiply(t, mc.DECIMAL32);
+        BigDecimal f3 = new BigDecimal (Math.pow(f1.doubleValue(), f2.doubleValue()),mc.DECIMAL32);
+        BigDecimal f4 = f3.multiply(bal, mc.DECIMAL32);
+        return f4.doubleValue();
     }
     
     /**
-     * Method getAcctType Mendapatkan tipe akun
-     * @return Nama tipe akun
+     * Method untuk mendapatkan tipe akun customer
+     * @return acctType 
      */
-    public char getAcctType() {
-        return acctType;
-    }
+    //public String getAcctType() {
+       //return acctType;}
     
-    /**
-     * Method getBalance Mendapatkan nilai saldo
-     * @return Jumlah uang/balance yang dimiliki sebuah akun
+    
+     /** 
+     * Method untuk mendapatkan nilai balance customer
+     * @return balance sebagai nilai balance
      */
     public double getBalance() {
         return balance;
     }
     
     /**
-     * Method getId Mendapatkan nomor
-     * @return ID dari akun yang bersangkutan
+     * Method untuk mendapatkan Id Customer
+     * @return nomor id customer
      */
-    public String getID() {
-        return ID;
+    public String getId() {
+        return id;
     }
     
     /**
-     * Method setBalance Menentukan jumlah uang/balance pada suatu akun 
-     * @param amount Jumlah Nilai Kas yang akan 
+     * Method untuk mengatur balance customer
+     * @param amount balance customer
      */
     public void setBalance(double amount) {
-        balance = amount;
+        balance = amount; 
     }
-    
+        
     /**
-     * Method setID Menentukan nama ID dari sebuah akun
-     * @param acctID Nama ID Account
-     */
-    /*
-    public void setID(String acctId) {
-        ID = acctId;
-    }*/
-    
+     * Method untuk mengatur id customer
+     * @param acctId 
+    //public void setID(String acctId) {
+        //this.id = acctId; }
+        
     /**
-     * Method setAcctType Menentukan tipe akun
-     * @param type Tipe Akun pelanggan
-     */
-    public void setAcctType(char type) {
-        acctType = type;
-    }
-    
+     * Method untuk mengatur tipe akun customer
+     * @param type 
+     */    
+    //public void setAcctType(char type) {
+        //this.acctType = type; }
+        
     /**
-     * Method withdraw Mengambil sejumlah uang dari suatu akun 
-     * @param amount Jumlah Nilai Kas
+     * method untuk customer mengambil uang
      */
-    public boolean withdraw(double amount) {
-        if (balance-amount < 0) {
-            return false;
-        } else {
-            balance -= amount;
-            return true;
-        }
-    }
+    public abstract boolean withdraw (double amount);
    
 }
+    
+
